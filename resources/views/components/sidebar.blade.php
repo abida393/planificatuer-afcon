@@ -1,6 +1,6 @@
 <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col h-auto md:h-screen sticky top-0 z-50">
     <div class="p-6 flex items-center justify-between md:justify-center border-b border-slate-800">
-        <div class="flex items-end gap-0.5 select-none text-3xl font-bold font-sans tracking-tight text-[#E0E7FF] overflow-hidden">
+        <div class="flex items-end gap-0.5 select-none text-3xl font-black font-serif tracking-tight text-[#E0E7FF] overflow-hidden" style="font-family: 'Merriweather', serif;">
             <span class="animate-letter" style="animation-delay: 0.1s">A</span>
             <span class="animate-letter" style="animation-delay: 0.15s">t</span>
             <span class="animate-letter" style="animation-delay: 0.2s">l</span>

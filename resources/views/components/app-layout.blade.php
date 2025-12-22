@@ -15,18 +15,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-gray-50 text-slate-800">
-        <div class="min-h-screen flex flex-col md:flex-row">
-            <!-- Sidebar -->
-            <x-sidebar />
+        <div class="min-h-screen flex flex-col">
+            <!-- Navbar -->
+            <x-navbar />
 
             <!-- Main Content -->
-            <main class="flex-1 w-full relative z-0 overflow-y-auto h-screen">
+            <main class="flex-1 w-full relative z-0 overflow-y-auto">
                 <!-- Zellige Background Overlay -->
                 <div class="absolute inset-0 zellige-pattern -z-10 pointer-events-none"></div>
                 
-                <div class="p-6 md:p-8 max-w-7xl mx-auto">
-                    {{ $slot }}
-                </div>
+                {{ $slot }}
             </main>
         </div>
     </body>

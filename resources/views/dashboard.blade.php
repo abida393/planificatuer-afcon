@@ -1,5 +1,5 @@
 <x-app-layout>
     <x-hero />
 
-    <x-timeline />
+    <x-road-to-rabat />
 </x-app-layout>
