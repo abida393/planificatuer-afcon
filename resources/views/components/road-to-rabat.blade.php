@@ -1,229 +1,818 @@
-<div x-data="roadToRabat()" class="relative w-full min-h-[600px] bg-slate-50 overflow-hidden font-sans">
-    
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 z-0 opacity-[0.15] pointer-events-none" 
-         style="background-image: url('/images/afconn-background.png'); background-size: cover; background-position: center;">
+<div x-data="roadToRabat()"
+    class="relative w-full min-h-screen overflow-x-hidden font-sans text-slate-800 bg-gradient-to-br from-[#fefcf3] via-amber-50/30 to-[#f0f7ff]">
+
+    <!-- Pattern Overlay (Zlij Effect) - Global -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none mix-blend-overlay z-0"
+        style="background-image: url('/images/site_bg_pattern.png'); background-size: 300px;">
     </div>
-    
-    <!-- Gradient Overlay to ensure text readability if pattern is dark -->
-    <div class="absolute inset-0 z-0 bg-gradient-to-b from-white/80 to-slate-50/90 mix-blend-overlay"></div>
 
-    <div class="relative z-10 max-w-5xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        
-        <!-- Header & Input Section -->
-        <div class="text-center mb-16 space-y-6 bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-lg border border-white/50">
-            <h2 class="text-4xl font-extrabold text-emerald-900 tracking-tight sm:text-5xl drop-shadow-sm">
-                Road to <span class="text-red-700">Rabat</span>
-            </h2>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Discover your team's path to glory. Enter your nation below to reveal a personalized AFCON 2025 journey.
-            </p>
-
-            <!-- Input Form -->
-            <form @submit.prevent="generatePlan" class="max-w-2xl mx-auto relative group mt-8">
-                <div class="absolute -inset-1 bg-gradient-to-r from-emerald-600 via-amber-400 to-red-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative flex flex-col sm:flex-row shadow-lg rounded-xl overflow-hidden bg-white ring-1 ring-gray-200">
-                    <div class="flex-1 min-w-0">
-                        <label for="team-input" class="sr-only">Team Name</label>
-                        <input 
-                            id="team-input"
-                            type="text" 
-                            x-model="team" 
-                            placeholder="Enter Country Name (e.g., Morocco)" 
-                            class="block w-full border-0 py-4 pl-6 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 bg-transparent"
-                            required
-                        >
-                    </div>
-                    <div class="border-t sm:border-t-0 sm:border-l border-gray-200 bg-gray-50/50 sm:w-48">
-                        <label for="budget-select" class="sr-only">Budget</label>
-                        <select 
-                            id="budget-select"
-                            x-model="budget_tier" 
-                            class="block w-full border-0 py-4 pl-4 pr-10 text-gray-900 bg-transparent focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 cursor-pointer"
-                        >
-                            <option value="budget">Budget Saver</option>
-                            <option value="mid">Standard</option>
-                            <option value="luxury">Luxury</option>
-                        </select>
-                    </div>
-                    <button 
-                        type="submit" 
-                        :disabled="loading"
-                        class="relative inline-flex items-center justify-center gap-x-1.5 px-8 py-4 text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200 sm:rounded-none focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
-                    >
-                        <span x-show="!loading">Generate</span>
-                        <span x-show="loading">
-                             <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-                <!-- Error Message -->
-                <p x-show="error" x-transition.opacity class="absolute top-full left-0 mt-2 text-sm text-red-600 font-medium bg-white/90 px-2 py-1 rounded shadow-sm" x-text="error"></p>
-            </form>
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <!-- Floating Footballs -->
+        <div class="absolute top-1/4 left-5 w-8 h-8 animate-float-slow">
+            <div class="w-full h-full bg-gradient-to-br from-[#c1272d] to-[#daa520] rounded-full opacity-20"></div>
+        </div>
+        <div class="absolute top-3/4 right-10 w-12 h-12 animate-float">
+            <div class="w-full h-full bg-gradient-to-br from-[#006233] to-[#c1272d] rounded-full opacity-15"></div>
+        </div>
+        <div class="absolute top-1/3 right-1/4 w-6 h-6 animate-float-slower">
+            <div class="w-full h-full bg-gradient-to-br from-[#daa520] to-[#006233] rounded-full opacity-20"></div>
         </div>
 
-        <!-- Timeline Section -->
-        <div x-show="plan" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="relative">
-            
-            <!-- Result Prediction Header -->
-            <div class="text-center mb-12">
-                <span class="inline-flex items-center rounded-full bg-amber-50 px-4 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20 mb-2">Prediction</span>
-                <h3 class="text-2xl font-bold text-gray-900">
-                    <span x-text="plan?.team"></span> is predicted to reach the <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-red-600" x-text="plan?.prediction"></span>
-                </h3>
+        <!-- Geometric African Patterns -->
+        <div class="absolute -top-20 -right-20 w-96 h-96 opacity-5">
+            <div class="w-full h-full" style="background-image: url('data:image/svg+xml,<svg width=\" 100\"
+                height=\"100\" xmlns=\"http://www.w3.org/2000/svg\">
+                <path d=\"M20,20 L80,20 L50,80 Z\" fill=\"none\" stroke=\"%23c1272d\" stroke-width=\"2\" /></svg>');
+                background-repeat: repeat;">
+            </div>
+        </div>
+
+        <!-- Background Logo Watermark (Atlas Go) -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-15 pointer-events-none z-0">
+            <img src="/images/atlas_go_logo.png" alt="Atlas Go Watermark"
+                class="w-[800px] max-w-full h-auto object-contain animate-float-slow mix-blend-overlay filter sepia-[0.2]">
+        </div>
+    </div>
+
+    <!-- Celebration Confetti Container -->
+    <div x-show="plan" x-transition.opacity class="fixed inset-0 pointer-events-none z-40" id="confetti-container">
+    </div>
+
+    <!-- Zellige Borders Enhanced -->
+    <div class="absolute top-0 left-0 w-full h-4 bg-gradient-to-r from-[#006233] via-[#daa520] to-[#c1272d] z-30"></div>
+    <div class="absolute bottom-0 left-0 w-full h-4 bg-gradient-to-r from-[#c1272d] via-[#daa520] to-[#006233] z-30">
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- Animated Header with Stadium Background -->
+        <div class="relative text-center mb-12 pt-8">
+            <!-- Stadium Silhouette -->
+            <div class="absolute -top-10 inset-x-0 h-40 opacity-5">
+                <div class="w-full h-full" style="background-image: url('data:image/svg+xml,<svg viewBox=\" 0 0 100 30\"
+                    xmlns=\"http://www.w3.org/2000/svg\">
+                    <path d=\"M0,30 Q25,15 50,15 T100,30\" fill=\"%23c1272d\" /></svg>'); background-repeat: repeat-x;">
+                </div>
             </div>
 
-            <!-- Vertical Timeline Container -->
-            <div class="relative wrap overflow-hidden h-full pb-10">
-                <!-- Center Line (Desktop) / Left Line (Mobile implementation handled via CSS mostly, doing center for now with response classes) -->
-                <!-- Gradient Line -->
-                <div class="absolute border-opacity-20 border-gray-700 h-full border text-center" 
-                     style="left: 50%; border: 0; width: 4px; background: linear-gradient(to bottom, #059669, #eab308, #b91c1c); transform: translateX(-50%);">
+            <!-- Main Logo with Celebration -->
+            <!-- Logo Moved to Background -->
+
+            <!-- Tagline with Typing Effect -->
+            <div class="mt-6">
+                <h1
+                    class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#006233] via-[#daa520] to-[#c1272d] bg-clip-text text-transparent mb-4">
+                    <span class="inline-block animate-wave">⚽</span> Your AFCON Journey Starts Here
+                </h1>
+                <p class="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed">
+                    Where <span class="font-bold text-[#c1272d]">passion meets precision</span> —
+                    Calculate your perfect tournament experience in Morocco 2025!
+                </p>
+            </div>
+
+            <!-- Celebration Stats -->
+            <div class="mt-8 flex justify-center gap-6 flex-wrap">
+                <div class="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-amber-200">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-700">24 Nations</span>
+                </div>
+                <div class="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-amber-200">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-700">6 Host Cities</span>
+                </div>
+                <div class="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-amber-200">
+                    <div class="w-3 h-3 bg-[#daa520] rounded-full animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-700">Unforgettable Moments</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN INTERACTIVE CARD -->
+        <div class="max-w-4xl mx-auto mb-16 relative">
+            <!-- Floating Elements Around Card -->
+            <div class="absolute -left-8 top-1/4 w-16 h-16 opacity-20 animate-float-slower">
+                <div class="w-full h-full bg-[#c1272d] rounded-full"></div>
+            </div>
+            <div class="absolute -right-6 bottom-1/4 w-12 h-12 opacity-20 animate-float">
+                <div class="w-full h-full bg-[#006233] rounded-full"></div>
+            </div>
+
+            <!-- Main Form Card -->
+            <div
+                class="bg-gradient-to-br from-white to-amber-50/50 rounded-3xl shadow-2xl border-2 border-white overflow-hidden relative group hover:shadow-3xl transition-all duration-500">
+
+                <!-- Animated Border -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-[#006233] via-[#daa520] to-[#c1272d] opacity-0 group-hover:opacity-5 transition-opacity duration-500">
+                </div>
+
+                <!-- Card Content -->
+                <div class="relative p-8 md:p-10">
+                    <!-- Card Header -->
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-3">
+                            <span class="bg-gradient-to-r from-[#c1272d] to-[#daa520] bg-clip-text text-transparent">
+                                Dream Your AFCON Adventure
+                            </span>
+                        </h2>
+                        <p class="text-gray-600 max-w-md mx-auto">
+                            Select your team and travel style. We'll craft your personalized journey to glory!
+                        </p>
+                    </div>
+
+                    <form @submit.prevent="generatePlan" class="space-y-10">
+                        <!-- Team Selection with Flags -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label class="text-lg font-bold text-gray-700">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-[#daa520]" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Your National Team
+                                    </span>
+                                </label>
+                                <span class="text-sm text-gray-500 font-medium">Who will you support?</span>
+                            </div>
+
+                            <div class="relative">
+                                <!-- Selected Flag Preview -->
+                                <div x-show="team" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-20">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-lg">
+                                        <img :src="`https://flagcdn.com/w160/${getTeamCode()}.png`" :alt="team"
+                                            class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                    </div>
+                                </div>
+
+                                <select x-model="team" required
+                                    class="w-full bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 text-gray-800 text-lg font-bold rounded-2xl pl-16 pr-5 py-5 focus:ring-0 focus:border-[#daa520] transition-all duration-300 cursor-pointer appearance-none hover:border-[#daa520] hover:shadow-lg leading-tight shadow-sm">
+                                    <option value="" disabled selected>Choose your champion...</option>
+                                    <template x-for="t in teams" :key="t.name">
+                                        <option :value="t.name" class="font-bold" x-text="t.label"></option>
+                                    </template>
+                                </select>
+
+                                <div
+                                    class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-[#daa520]">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget Tier Selection - Enhanced -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label class="text-lg font-bold text-gray-700">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-[#daa520]" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Your Travel Style
+                                    </span>
+                                </label>
+                                <span class="text-sm text-gray-500 font-medium">How will you experience AFCON?</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Budget Tier -->
+                                <div @click="budget_tier = 'budget'"
+                                    class="relative group cursor-pointer transform transition-all duration-300 hover:-translate-y-2"
+                                    :class="budget_tier === 'budget' ? 'scale-105' : ''">
+                                    <div
+                                        class="absolute -inset-0.5 bg-gradient-to-r from-emerald-400 to-green-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000">
+                                    </div>
+                                    <div class="relative bg-white rounded-2xl p-6 border-2 transition-all duration-300"
+                                        :class="budget_tier === 'budget' ? 'border-emerald-400 shadow-xl' : 'border-gray-200 group-hover:border-emerald-200'">
+                                        <div class="flex flex-col items-center text-center">
+                                            <div
+                                                class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-2xl mb-4 shadow-inner">
+                                                🚌
+                                            </div>
+                                            <h3 class="font-bold text-gray-800 text-lg mb-2">Budget Explorer</h3>
+                                            <p class="text-sm text-gray-600 mb-4">Experience the passion without
+                                                breaking the bank</p>
+                                            <div class="text-emerald-600 font-bold">$50 - $100 / day</div>
+                                            <div x-show="budget_tier === 'budget'"
+                                                class="mt-4 w-8 h-1 bg-emerald-400 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mid Tier -->
+                                <div @click="budget_tier = 'mid'"
+                                    class="relative group cursor-pointer transform transition-all duration-300 hover:-translate-y-2"
+                                    :class="budget_tier === 'mid' ? 'scale-105' : ''">
+                                    <div
+                                        class="absolute -inset-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000">
+                                    </div>
+                                    <div class="relative bg-white rounded-2xl p-6 border-2 transition-all duration-300"
+                                        :class="budget_tier === 'mid' ? 'border-blue-400 shadow-xl' : 'border-gray-200 group-hover:border-blue-200'">
+                                        <div class="flex flex-col items-center text-center">
+                                            <div
+                                                class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl mb-4 shadow-inner">
+                                                ✈️
+                                            </div>
+                                            <h3 class="font-bold text-gray-800 text-lg mb-2">Comfort Voyager</h3>
+                                            <p class="text-sm text-gray-600 mb-4">Balance excitement with premium
+                                                comfort</p>
+                                            <div class="text-blue-600 font-bold">$150 - $300 / day</div>
+                                            <div x-show="budget_tier === 'mid'"
+                                                class="mt-4 w-8 h-1 bg-blue-400 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Luxury Tier -->
+                                <div @click="budget_tier = 'luxury'"
+                                    class="relative group cursor-pointer transform transition-all duration-300 hover:-translate-y-2"
+                                    :class="budget_tier === 'luxury' ? 'scale-105' : ''">
+                                    <div
+                                        class="absolute -inset-0.5 bg-gradient-to-r from-amber-400 to-[#daa520] rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000">
+                                    </div>
+                                    <div class="relative bg-white rounded-2xl p-6 border-2 transition-all duration-300"
+                                        :class="budget_tier === 'luxury' ? 'border-amber-400 shadow-xl' : 'border-gray-200 group-hover:border-amber-200'">
+                                        <div class="flex flex-col items-center text-center">
+                                            <div
+                                                class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center text-2xl mb-4 shadow-inner">
+                                                👑
+                                            </div>
+                                            <h3 class="font-bold text-gray-800 text-lg mb-2">Royal Experience</h3>
+                                            <p class="text-sm text-gray-600 mb-4">Live the tournament like royalty</p>
+                                            <div class="text-amber-600 font-bold">$500+ / day</div>
+                                            <div x-show="budget_tier === 'luxury'"
+                                                class="mt-4 w-8 h-1 bg-amber-400 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <div class="pt-8 text-center">
+                            <button type="submit" :disabled="loading || !team"
+                                class="relative overflow-hidden group inline-flex items-center justify-center gap-3 px-12 py-6 bg-gradient-to-r from-[#c1272d] via-[#daa520] to-[#006233] text-white text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all duration-500">
+
+                                <!-- Animated Background -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-[#006233] via-[#daa520] to-[#c1272d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+
+                                <!-- Button Content -->
+                                <span x-show="!loading" class="relative z-10 flex items-center gap-3">
+                                    <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                    Create My Journey Plan
+                                    <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </span>
+
+                                <span x-show="loading" class="relative z-10 flex items-center gap-3">
+                                    <svg class="animate-spin h-6 w-6" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4" />
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                    </svg>
+                                    Crafting Your Experience...
+                                </span>
+
+                                <!-- Shine Effect -->
+                                <div
+                                    class="absolute inset-0 -translate-x-full group-hover:animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent">
+                                </div>
+                            </button>
+
+                            <div x-show="error" x-transition.opacity
+                                class="mt-4 text-red-500 text-sm font-medium bg-red-50 inline-block px-4 py-2 rounded-lg border border-red-100 shadow-sm animate-shake"
+                                x-text="error"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticker Removed -->
+
+        <!-- JOURNEY TIMELINE - Enhanced -->
+        <div x-show="plan" x-transition:enter="transition ease-out duration-700"
+            x-transition:enter-start="opacity-0 translate-y-20" x-transition:enter-end="opacity-100 translate-y-0"
+            class="relative mb-20">
+
+            <!-- Celebration Banner -->
+            <div class="text-center mb-16 relative">
+                <div
+                    class="absolute inset-x-0 top-1/2 h-1 bg-gradient-to-r from-transparent via-[#daa520]/50 to-transparent">
+                </div>
+                <div
+                    class="relative inline-block bg-gradient-to-r from-white to-amber-50 px-10 py-6 rounded-3xl shadow-2xl border-2 border-[#daa520]/30">
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="flex items-center gap-4">
+                            <img :src="`https://flagcdn.com/w160/${getTeamCode()}.png`" :alt="team"
+                                class="w-12 h-12 rounded-full border-2 border-white shadow-lg"
+                                onerror="this.style.display='none'">
+                            <h3 class="text-4xl font-bold text-gray-800">
+                                Your <span class="text-[#c1272d]" x-text="plan?.team"></span> Journey
+                            </h3>
+                        </div>
+                        <div
+                            class="text-2xl font-bold bg-gradient-to-r from-[#00ff88] to-[#00ccff] bg-clip-text text-transparent">
+                            Predicted to reach: <span x-text="plan?.prediction"></span>
+                        </div>
+                        <div class="text-sm text-gray-500 font-medium">
+                            Total Estimated Cost: <span class="text-[#daa520] font-bold text-lg"
+                                x-text="formatCurrency(plan?.total_cost)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Timeline -->
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div
+                    class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-transparent via-[#daa520] to-transparent opacity-30">
                 </div>
 
                 <!-- Timeline Items -->
-                <template x-for="(stop, index) in plan?.itinerary" :key="index">
-                    <div class="mb-12 flex justify-between items-center w-full right-timeline group"
-                         :class="index % 2 === 0 ? 'flex-row-reverse' : ''">
-                         <!-- Empty Half -->
-                        <div class="order-1 w-5/12 hidden md:block"></div>
-                        
-                        <!-- Node Circle -->
-                        <div class="z-20 flex items-center order-1 shadow-xl w-10 h-10 rounded-full border-4 border-slate-50 bg-white transition duration-300 transform group-hover:scale-110 group-hover:border-amber-400">
-                            <div class="mx-auto font-semibold text-lg text-emerald-800" x-text="index + 1"></div>
-                        </div>
-                        
-                        <!-- Content Card -->
-                        <div class="order-1 w-full md:w-5/12 px-6 py-4 shadow-lg rounded-2xl bg-white border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer relative overflow-hidden"
-                             @click="openModal(stop)">
-                             <!-- Decorative side strip -->
-                             <div class="absolute top-0 bottom-0 w-1.5 left-0" 
-                                  :class="index % 2 !== 0 ? 'bg-emerald-500' : 'bg-red-600 right-0 left-auto'"></div>
-                             
-                            <div class="flex flex-col space-y-2">
-                                <div class="flex justify-between items-start">
-                                    <h4 class="font-bold text-lg text-gray-800" x-text="stop.city"></h4>
-                                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10" x-text="stop.date"></span>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <p class="text-sm text-gray-800 font-semibold flex items-center gap-2">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span x-text="stop.match.opponent"></span>
-                                    </p>
-                                    <span class="text-[10px] uppercase tracking-wider text-gray-500 font-medium" x-text="stop.match.stage"></span>
-                                </div>
-                                <p class="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                                    <svg class="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-                                    <span class="truncate" x-text="stop.stadium.name"></span>
-                                </p>
-                                <div class="mt-2 pt-2 border-t border-gray-100 flex justify-between items-center text-xs">
-                                     <span class="text-amber-600 font-semibold" x-text="'Est. ' + formatCurrency(stop.costs?.total, plan?.currency)"></span>
-                                     <span class="text-emerald-600 flex items-center group-hover:translate-x-1 transition-transform">
-                                        Must Visit <svg class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                                     </span>
+                <div class="space-y-20">
+                    <template x-for="(stop, index) in plan?.itinerary" :key="index">
+                        <div class="relative flex items-center justify-center"
+                            :class="index % 2 === 0 ? 'flex-row-reverse' : ''">
+
+                            <!-- Content Card -->
+                            <div class="w-full md:w-5/12" :class="index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'">
+                                <div @click="openModal(stop)"
+                                    class="group relative bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-100 hover:border-[#daa520] cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
+
+                                    <!-- Card Decoration -->
+                                    <div
+                                        class="absolute -top-3 -right-3 w-12 h-12 bg-[#daa520] rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                                        <span x-text="index + 1"></span>
+                                    </div>
+
+                                    <!-- Match Info -->
+                                    <div class="mb-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h4 class="text-2xl font-bold text-gray-800" x-text="stop.city"></h4>
+                                            <span
+                                                class="bg-gradient-to-r from-[#daa520] to-[#c1272d] text-white px-4 py-1 rounded-full text-sm font-bold"
+                                                x-text="stop.match.stage"></span>
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-6 py-4 bg-gray-50 rounded-xl">
+                                            <div class="text-center">
+                                                <img :src="getFlagUrl(plan?.team)"
+                                                    class="w-10 h-10 rounded-full border-2 border-white shadow mx-auto mb-2 object-cover">
+                                                <div class="font-bold text-gray-800" x-text="plan?.team"></div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-2xl text-[#c1272d] font-bold">VS</div>
+                                                <div class="text-xs text-gray-500 mt-1" x-text="stop.date"></div>
+                                            </div>
+                                            <div class="text-center">
+                                                <img :src="getFlagUrl(stop.match.opponent)"
+                                                    class="w-10 h-10 rounded-full border-2 border-white shadow mx-auto mb-2 object-cover">
+                                                <div class="font-bold text-gray-800" x-text="stop.match.opponent"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stadium & Budget -->
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3 text-gray-600">
+                                            <svg class="w-5 h-5 text-[#daa520]" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            </svg>
+                                            <span class="font-medium" x-text="stop.stadium.name"></span>
+                                        </div>
+                                        <div class="flex items-center gap-3 text-gray-600">
+                                            <svg class="w-5 h-5 text-[#daa520]" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span class="font-bold text-lg text-[#c1272d]"
+                                                x-text="formatCurrency(stop.estimated_cost)"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hover Effect -->
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-r from-[#daa520]/0 to-[#c1272d]/0 group-hover:from-[#daa520]/5 group-hover:to-[#c1272d]/5 rounded-3xl transition-all duration-500">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </template>
+                </div>
+
+                <!-- Final Trophy -->
+                <div class="flex justify-center mt-20">
+                    <div class="relative">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-[#ffd700] to-[#daa520] rounded-full blur-3xl opacity-30">
+                        </div>
+                        <div
+                            class="relative bg-gradient-to-br from-[#ffd700] to-[#b8860b] w-24 h-24 rounded-full flex items-center justify-center shadow-2xl border-4 border-white animate-pulse">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 00-.565.133l-1.756 1.05a3 3 0 00-1.012 4.109A1 1 0 019 20a1 1 0 01-.989-1.28l.588-2.94a1 1 0 00-.735-1.127l-5.46-1.815zM8 4a1 1 0 00-1 1v1.323l2-1.582V4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="text-center mt-4">
+                            <div
+                                class="text-2xl font-bold bg-gradient-to-r from-[#ffd700] to-[#daa520] bg-clip-text text-transparent">
+                                Glory Awaits!
+                            </div>
+                        </div>
                     </div>
-                </template>
+                </div>
             </div>
-            
-             <!-- Final Trophy Node -->
-             <div class="flex justify-center mt-[-30px] relative z-20">
-                 <div class="w-16 h-16 bg-gradient-to-br from-amber-300 to-amber-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white animate-bounce-slow">
-                     <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 00-.565.133l-1.756 1.05a3 3 0 00-1.012 4.109A1 1 0 019 20a1 1 0 01-.989-1.28l.588-2.94a1 1 0 00-.735-1.127l-5.46-1.815zM8 4a1 1 0 00-1 1v1.323l2-1.582V4z" clip-rule="evenodd"></path></svg>
-                 </div>
-             </div>
         </div>
 
-        <!-- Initial Placeholder State (Optional) -->
-        <div x-show="!plan && !loading" class="mt-8 text-center opacity-50">
-             <div class="mx-auto h-48 w-48 opacity-20 bg-[url('/images/afcon2025_logo_land_color-v1.webp')] bg-contain bg-no-repeat bg-center"></div>
+        <!-- Sharing Section -->
+        <div x-show="plan" x-transition.opacity
+            class="text-center mt-20 p-8 bg-gradient-to-r from-white/80 to-amber-50/80 rounded-3xl border-2 border-[#daa520]/20">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Share Your Journey!</h3>
+            <p class="text-gray-600 mb-6">Let your friends know about your AFCON adventure plan</p>
+            <div class="flex justify-center gap-4 flex-wrap">
+                <button
+                    class="flex items-center gap-2 bg-[#1877F2] text-white px-6 py-3 rounded-full font-bold hover:bg-[#0d65d9] transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                    Share on Facebook
+                </button>
+                <button
+                    class="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-800 transition-colors">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                    </svg>
+                    Tweet It
+                </button>
+            </div>
         </div>
 
     </div>
 
-    <!-- Modal -->
-    <div x-show="modalOpen" 
-         class="relative z-50 transition-all" 
-         aria-labelledby="modal-title" 
-         role="dialog" 
-         aria-modal="true"
-         style="display: none;"
-    >
-        <div x-show="modalOpen" 
-             x-transition:enter="ease-out duration-300" 
-             x-transition:enter-start="opacity-0" 
-             x-transition:enter-end="opacity-100" 
-             x-transition:leave="ease-in duration-200" 
-             x-transition:leave-start="opacity-100" 
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
+    <!-- Modal remains mostly the same but enhanced -->
+    <div x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <!-- Modal backdrop -->
+        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
 
+        <!-- Modal content -->
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div x-show="modalOpen" 
-                     x-transition:enter="ease-out duration-300" 
-                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
-                     x-transition:leave="ease-in duration-200" 
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
-                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border-t-8 border-emerald-600"
-                     @click.outside="modalOpen = false">
-                    
-                    <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-                        <button type="button" @click="modalOpen = false" class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                        <span class="sr-only">Close</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    </div>
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div x-show="modalOpen" x-transition:enter="ease-out duration-500"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="ease-in duration-300" x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-90"
+                    class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-2xl border-4 border-amber-400"
+                    @click.outside="modalOpen = false">
 
-                    <div class="px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                             <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 sm:mx-0 sm:h-10 sm:w-10">
-                                <svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-800" x-text="selectedCity?.city"></h3>
+                                <p class="text-gray-500 mt-1" x-text="selectedCity?.city_metadata?.description"></p>
                             </div>
-                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-                                <h3 class="text-2xl font-bold leading-6 text-gray-900" id="modal-title" x-text="selectedCity ? 'Must Visit: ' + selectedCity.city : 'City Details'"></h3>
-                                <p class="mt-1 text-sm text-gray-500" x-text="selectedCity?.city_metadata?.description"></p>
-                                
-                                <div class="mt-6">
-                                    <h4 class="text-sm font-semibold text-emerald-800 uppercase tracking-wide mb-3">Tourist Hotspots</h4>
-                                    <ul class="space-y-4">
-                                        <template x-for="spot in (selectedCity?.must_visit || [])">
-                                            <li class="flex items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                                <span class="flex-shrink-0 h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center mr-3 mt-0.5 border border-amber-200 text-amber-700">
-                                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                                                </span>
-                                                <div>
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="text-gray-800 font-bold text-base" x-text="spot.name"></span>
-                                                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20" x-text="spot.category"></span>
-                                                    </div>
-                                                    <p class="text-sm text-gray-600 mt-0.5 leading-snug" x-text="spot.description"></p>
-                                                </div>
-                                            </li>
-                                        </template>
-                                        <template x-if="!selectedCity?.must_visit?.length">
-                                            <li class="italic text-gray-500 text-center py-4">No specific spots listed for this location.</li>
-                                        </template>
-                                    </ul>
+                            <button @click="modalOpen = false"
+                                class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Must Visit Section -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-[#c1272d] mb-4 flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 21v-8a2 2 0 012-2h14a2 2 0 012 2v8M10 21h4m-4-10V7a3 3 0 013-3h0a3 3 0 013 3v4" />
+                                </svg>
+                                Must Visit Places
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <template x-for="place in selectedCity?.must_visit" :key="place.name">
+                                    <div
+                                        class="bg-amber-50 rounded-xl p-4 border border-amber-100 hover:border-amber-300 transition-colors">
+                                        <div class="font-bold text-gray-800" x-text="place.name"></div>
+                                        <div class="text-xs text-[#daa520] font-bold uppercase tracking-wider mb-2"
+                                            x-text="place.category"></div>
+                                        <p class="text-sm text-gray-600" x-text="place.description"></p>
+                                    </div>
+                                </template>
+                                <div x-show="!selectedCity?.must_visit?.length"
+                                    class="col-span-2 text-gray-400 italic text-center py-4">
+                                    No specific recommendations available for this stop.
                                 </div>
                             </div>
                         </div>
-                    </div>
-                     <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" @click="modalOpen = false">Close</button>
+
+                        <!-- Match Details -->
+                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                            <h4 class="text-lg font-bold text-gray-800 mb-4">Match Details</h4>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm text-gray-500">Opponent</div>
+                                    <div class="font-bold text-xl text-[#c1272d]"
+                                        x-text="selectedCity?.match?.opponent"></div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-500">Stadium</div>
+                                    <div class="font-bold text-gray-800" x-text="selectedCity?.stadium?.name"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex justify-center">
+                            <button @click="modalOpen = false"
+                                class="bg-[#c1272d] text-white px-8 py-3 rounded-full font-bold hover:bg-[#a01e23] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                Close Details
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- PREMIUM FOOTER -->
+<footer class="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white pt-20 pb-10 overflow-hidden mt-20">
+    <!-- Footer Pattern -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none mix-blend-overlay"
+        style="background-image: url('/images/site_bg_pattern.png'); background-size: 150px;">
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <!-- Brand Section -->
+            <div class="col-span-1 md:col-span-1">
+                <img src="/images/atlas_go_final_logo.png" alt="Atlas Go" class="h-24 w-auto mb-6">
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    The ultimate companion for your AFCON 2025 journey in Morocco. Plan, explore, and
+                    celebrate African football excellence.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#c1272d] hover:text-white transition-colors duration-300">
+                        <span class="sr-only">Facebook</span>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#1DA1F2] hover:text-white transition-colors duration-300">
+                        <span class="sr-only">Twitter</span>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#E1306C] hover:text-white transition-colors duration-300">
+                        <span class="sr-only">Instagram</span>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.012-4.849-.069-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-6 border-l-4 border-[#daa520] pl-3">
+                    Explore</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-[#daa520] transition-colors">Home</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#daa520] transition-colors">AFCON
+                            News</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#daa520] transition-colors">Match
+                            Schedule</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#daa520] transition-colors">Host
+                            Cities</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[#daa520] transition-colors">Buy
+                            Tickets</a></li>
+                </ul>
+            </div>
+
+            <!-- Host Cities -->
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-6 border-l-4 border-[#c1272d] pl-3">
+                    Destinations</h4>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Rabat</span></li>
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Casablanca</span></li>
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Marrakech</span></li>
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Tangier</span></li>
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Agadir</span></li>
+                    <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[#006233] rounded-full"></span><span
+                            class="text-gray-400">Fes</span></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-6 border-l-4 border-[#006233] pl-3">
+                    Stay Updated</h4>
+                <p class="text-gray-400 text-sm mb-4">Subscribe for the latest AFCON 2025 news and
+                    offers.</p>
+                <form class="space-y-2">
+                    <input type="email" placeholder="Your Email Address"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#daa520] focus:ring-1 focus:ring-[#daa520] transition-all">
+                    <button
+                        class="w-full bg-gradient-to-r from-[#c1272d] to-[#daa520] text-white font-bold py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Separator -->
+        <div class="border-t border-white/10 my-8"></div>
+
+        <!-- Bottom Footer -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-gray-500 text-sm">
+                &copy; 2025 Atlas Go. All rights reserved. Not affiliated with CAF.
+            </div>
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="text-gray-500 hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors">Terms of
+                    Service</a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors">Contact</a>
+            </div>
+        </div>
+
+        <!-- Bottom Decoration -->
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#c1272d] via-[#daa520] to-[#006233]">
+        </div>
+    </div>
+</footer>
+</div>
+
+<style>
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    @keyframes float-slow {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-15px) rotate(-5deg);
+        }
+    }
+
+    @keyframes float-slower {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%) rotate(12deg);
+        }
+
+        100% {
+            transform: translateX(100%) rotate(12deg);
+        }
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes wave {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(-10deg);
+        }
+
+        75% {
+            transform: rotate(10deg);
+        }
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        75% {
+            transform: translateX(5px);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-slow {
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .animate-float-slower {
+        animation: float-slower 10s ease-in-out infinite;
+    }
+
+    .animate-shimmer {
+        animation: shimmer 2s infinite;
+    }
+
+    .animate-marquee {
+        animation: marquee 20s linear infinite;
+    }
+
+    .animate-wave {
+        animation: wave 1s ease-in-out infinite;
+    }
+
+    .animate-shake {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    .animate-bounce-slow {
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+</style>
 
 <script>
     function roadToRabat() {
@@ -235,21 +824,52 @@
             error: null,
             modalOpen: false,
             selectedCity: null,
+            teams: [
+                { name: 'Morocco', code: 'ma', label: '🇲🇦 Morocco (Host)' },
+                { name: 'Senegal', code: 'sn', label: '🇸🇳 Senegal' },
+                { name: 'Egypt', code: 'eg', label: '🇪🇬 Egypt' },
+                { name: 'Nigeria', code: 'ng', label: '🇳🇬 Nigeria' },
+                { name: 'Algeria', code: 'dz', label: '🇩🇿 Algeria' },
+                { name: 'Ivory Coast', code: 'ci', label: '🇨🇮 Ivory Coast' },
+                { name: 'Cameroon', code: 'cm', label: '🇨🇲 Cameroon' },
+                { name: 'Ghana', code: 'gh', label: '🇬🇭 Ghana' },
+                { name: 'Tunisia', code: 'tn', label: '🇹🇳 Tunisia' },
+                { name: 'Mali', code: 'ml', label: '🇲🇱 Mali' },
+                { name: 'Burkina Faso', code: 'bf', label: '🇧🇫 Burkina Faso' },
+                { name: 'Guinea', code: 'gn', label: '🇬🇳 Guinea' },
+                { name: 'DR Congo', code: 'cd', label: '🇨🇩 DR Congo' },
+                { name: 'Zambia', code: 'zm', label: '🇿🇲 Zambia' },
+                { name: 'South Africa', code: 'za', label: '🇿🇦 South Africa' },
+                { name: 'Angola', code: 'ao', label: '🇦🇴 Angola' },
+                { name: 'Gabon', code: 'ga', label: '🇬🇦 Gabon' },
+                { name: 'Uganda', code: 'ug', label: '🇺🇬 Uganda' },
+                { name: 'Ethiopia', code: 'et', label: '🇪🇹 Ethiopia' },
+                { name: 'Zimbabwe', code: 'zw', label: '🇿🇼 Zimbabwe' },
+                { name: 'Tanzania', code: 'tz', label: '🇹🇿 Tanzania' },
+                { name: 'Sudan', code: 'sd', label: '🇸🇩 Sudan' },
+                { name: 'Libya', code: 'ly', label: '🇱🇾 Libya' },
+                { name: 'Benin', code: 'bj', label: '🇧🇯 Benin' }
+            ],
+
+            getTeamCode() {
+                const found = this.teams.find(t => t.name === this.team);
+                return found ? found.code : 'ma';
+            },
 
             async generatePlan() {
                 if (!this.team) return;
-                
+
                 this.loading = true;
                 this.error = null;
                 this.plan = null;
 
                 try {
-                    // Using 127.0.0.1 is critical for Windows browsers (0.0.0.0 is server-only)
-                    const response = await fetch('http://127.0.0.1:8000/generate-plan', {
+                    const response = await fetch('/generate-plan', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
                             team: this.team,
@@ -257,22 +877,61 @@
                         })
                     });
 
+                    const data = await response.json();
+
                     if (!response.ok) {
-                        throw new Error('Failed to fetch plan. Ensure the AI Agent is running on Port 8000.');
+                        throw new Error(data.error || data.details || 'Failed to fetch plan.');
                     }
 
-                    const data = await response.json();
-                    
                     if (data.error) {
-                         throw new Error(data.error);
+                        throw new Error(data.error);
                     }
+
                     this.plan = data;
+
+                    // Trigger confetti celebration
+                    this.triggerConfetti();
+
+                    // Scroll to results
+                    setTimeout(() => {
+                        document.querySelector('[x-show="plan"]').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 500);
+
                 } catch (err) {
                     this.error = err.message || 'Something went wrong. Please try again.';
                     console.error(err);
-                    alert('Error: ' + this.error);
                 } finally {
                     this.loading = false;
+                }
+            },
+
+            triggerConfetti() {
+                const colors = ['#c1272d', '#daa520', '#006233', '#ffffff'];
+                const confettiContainer = document.getElementById('confetti-container');
+
+                for (let i = 0; i < 150; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'absolute w-2 h-2 rounded-full';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.opacity = '0.8';
+
+                    confettiContainer.appendChild(confetti);
+
+                    // Animation
+                    const animation = confetti.animate([
+                        { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                        { transform: `translate(${Math.random() * 100 - 50}px, 100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                    });
+
+                    animation.onfinish = () => confetti.remove();
                 }
             },
 
@@ -280,9 +939,54 @@
                 this.selectedCity = stop;
                 this.modalOpen = true;
             },
-            
-            formatCurrency(amount, currency) {
-                return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD' }).format(amount);
+
+            formatCurrency(amount) {
+                if (!amount) return '$0';
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            },
+
+            getFlagEmoji(countryName) {
+                const flagMap = {
+                    'Morocco': '🇲🇦',
+                    'Senegal': '🇸🇳',
+                    'Egypt': '🇪🇬',
+                    'Nigeria': '🇳🇬',
+                    'Algeria': '🇩🇿',
+                    'Ivory Coast': '🇨🇮',
+                    'Cameroon': '🇨🇲',
+                    'Ghana': '🇬🇭',
+                    'Tunisia': '🇹🇳',
+                    'Mali': '🇲🇱',
+                    'Burkina Faso': '🇧🇫',
+                    'Guinea': '🇬🇳',
+                    'Congo': '🇨🇬',
+                    'Zambia': '🇿🇲',
+                    'South Africa': '🇿🇦',
+                    'Angola': '🇦🇴',
+                    'Gabon': '🇬🇦',
+                    'Uganda': '🇺🇬',
+                    'Ethiopia': '🇪🇹',
+                    'Zimbabwe': '🇿🇼',
+                    'Tanzania': '🇹🇿',
+                    'Sudan': '🇸🇩',
+                    'Libya': '🇱🇾',
+                    'Benin': '🇧🇯',
+                    'Mauritania': '🇲🇷'
+                };
+                return flagMap[countryName] || '🏴';
+            }
+            ,
+
+            getFlagUrl(countryName) {
+                if (!countryName) return '';
+                const found = this.teams.find(t => t.name.includes(countryName) || countryName.includes(t.name));
+                const code = found ? found.code : 'ma'; // Fallback to Morocco if unknown
+                return `https://flagcdn.com/w160/${code}.png`;
             }
         }
     }

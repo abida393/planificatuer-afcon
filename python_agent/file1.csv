@@ -1,0 +1,48 @@
+hotel_name;city;location;stars;price_usd_per_night
+Hotel Borj Rabat;Rabat;Hassan;3;45
+Rihab Hotel;Rabat;Agdal;4;95
+Belere Hotel Rabat;Rabat;City Center;4;110
+Hotel La Tour Hassan;Rabat;Hassan;5;220
+Sofitel Jardin des Roses;Rabat;Souissi;5;280
+Fairmont La Marina;Rabat;Bouregreg Marina;5;350
+Ibis Rabat Agdal;Rabat;Agdal;3;55
+Hotel Malak;Rabat;Agdal;3;60
+Helnan Chellah;Rabat;Hassan;4;120
+Hotel Central;Casablanca;Old Medina;2;40
+Ibis Casa City Center;Casablanca;Downtown;3;55
+Ibis Abdelmoumen;Casablanca;Abdelmoumen;3;60
+Kenzi Basma;Casablanca;City Center;4;120
+Kenzi Tower Hotel;Casablanca;Twin Center;5;240
+Barceló Anfa Casablanca;Casablanca;Anfa;5;260
+Hyatt Regency Casablanca;Casablanca;United Nations Sq;5;290
+Four Seasons Casablanca;Casablanca;Ain Diab;5;420
+Hotel Ali;Marrakech;Jemaa el-Fna;2;50
+Hotel Cecil;Marrakech;Medina;2;45
+Riad Dar Attika;Marrakech;Medina;3;70
+Riad Marrakiss;Marrakech;Medina;3;75
+Ibis Marrakech Centre;Marrakech;Gueliz;3;60
+Kenzi Rose Garden;Marrakech;Hivernage;4;150
+Adam Park Hotel;Marrakech;Agdal;5;190
+Savoy Le Grand Hotel;Marrakech;Hivernage;5;300
+Royal Mansour Marrakech;Marrakech;Medina;5;600
+Hotel Mauritania;Tangier;City Center;2;35
+Hotel Continental;Tangier;Old Port;3;60
+Ibis Tanger City Center;Tangier;Malabata;3;55
+Hilton Garden Inn;Tangier;Malabata;4;110
+Grand Hotel Villa de France;Tangier;Marshan;5;220
+El Minzah Hotel;Tangier;City Center;5;240
+Fairmont Tazi Palace;Tangier;Palace Area;5;380
+Hotel Lynx;Agadir;City Center;2;30
+Hotel Kamal City Center;Agadir;City Center;2;35
+Hotel Timoulay;Agadir;Founty;3;50
+Ibis Budget Agadir;Agadir;Founty;2;45
+Atlantic Palace;Agadir;Founty;5;180
+Sofitel Agadir Royal Bay;Agadir;Bay Area;5;260
+Riu Palace Tikida;Agadir;Beachfront;5;320
+Hotel Batha;Fes;Medina;2;25
+Hotel Mounia;Fes;City Center;3;45
+Riad Meski;Fes;Old Medina;3;50
+Zalagh Parc Palace;Fes;New City;4;95
+Barceló Fes Medina;Fes;New City;4;110
+Hotel Sahrai;Fes;Route d’Imouzzer;5;210
+Palais Faraj Suites;Fes;Medina Hills;5;300

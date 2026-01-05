@@ -1,0 +1,53 @@
+Match;Stadium;Time;Date;Stage;Group;City
+Morocco vs Comoros;Prince Moulay Abdellah;20:00;21/12/2025;Group Stage;A;Rabat
+Mali vs Zambia;Stade Mohammed V;15:00;22/12/2025;Group Stage;A;Casablanca
+Zambia vs Comoros;Stade Mohammed V;18:30;26/12/2025;Group Stage;A;Casablanca
+Morocco vs Mali;Prince Moulay Abdellah;21:00;26/12/2025;Group Stage;A;Rabat
+Comoros vs Mali;Stade Mohammed V;20:00;29/12/2025;Group Stage;A;Casablanca
+Morocco vs Zambia;Prince Moulay Abdellah;20:00;29/12/2025;Group Stage;A;Rabat
+Egypt vs Zimbabwe;Grand Stade d'Agadir;21:00;22/12/2025;Group Stage;B;Agadir
+South Africa vs Angola;Grand Stade de Marrakech;18:00;22/12/2025;Group Stage;B;Marrakech
+Angola vs Zimbabwe;Grand Stade de Marrakech;13:30;26/12/2025;Group Stage;B;Marrakech
+Egypt vs South Africa;Grand Stade d'Agadir;16:00;26/12/2025;Group Stage;B;Agadir
+Zimbabwe vs South Africa;Grand Stade de Marrakech;17:00;29/12/2025;Group Stage;B;Marrakech
+Egypt vs Angola;Grand Stade d'Agadir;17:00;29/12/2025;Group Stage;B;Agadir
+Nigeria vs Tanzania;Stade de Fes;18:30;23/12/2025;Group Stage;C;Fes
+Tunisia vs Uganda;Prince Moulay Abdellah;21:00;23/12/2025;Group Stage;C;Rabat
+Uganda vs Tanzania;Prince Moulay Abdellah;18:30;27/12/2025;Group Stage;C;Rabat
+Nigeria vs Tunisia;Stade de Fes;21:00;27/12/2025;Group Stage;C;Fes
+Nigeria vs Uganda;Stade de Fes;17:00;30/12/2025;Group Stage;C;Fes
+Tanzania vs Tunisia;Prince Moulay Abdellah;17:00;30/12/2025;Group Stage;C;Rabat
+DR Congo vs Benin;Prince Moulay Abdellah;13:30;23/12/2025;Group Stage;D;Rabat
+Senegal vs Botswana;Grand Stade de Tanger;16:00;23/12/2025;Group Stage;D;Tanger
+Benin vs Botswana;Prince Moulay Abdellah;13:30;27/12/2025;Group Stage;D;Rabat
+DR Congo vs Senegal;Grand Stade de Tanger;16:00;27/12/2025;Group Stage;D;Tanger
+Botswana vs DR Congo;Prince Moulay Abdellah;20:00;30/12/2025;Group Stage;D;Rabat
+Benin vs Senegal;Grand Stade de Tanger;20:00;30/12/2025;Group Stage;D;Tanger
+Burkina Faso vs Equatorial Guinea;Stade Mohammed V;13:30;24/12/2025;Group Stage;E;Casablanca
+Algeria vs Sudan;Prince Moulay Abdellah;16:00;24/12/2025;Group Stage;E;Rabat
+Equatorial Guinea vs Sudan;Stade Mohammed V;16:00;28/12/2025;Group Stage;E;Casablanca
+Algeria vs Burkina Faso;Prince Moulay Abdellah;18:00;28/12/2025;Group Stage;E;Rabat
+Guinea Eq. vs Algeria;Prince Moulay Abdellah;17:00;31/12/2025;Group Stage;E;Rabat
+Burkina Faso vs Sudan;Stade Mohammed V;17:00;31/12/2025;Group Stage;E;Casablanca
+Ivory Coast vs Mozambique;Grand Stade de Marrakech;18:30;24/12/2025;Group Stage;F;Marrakech
+Cameroon vs Gabon;Grand Stade d'Agadir;21:00;24/12/2025;Group Stage;F;Agadir
+Gabon vs Mozambique;Grand Stade d'Agadir;13:30;28/12/2025;Group Stage;F;Agadir
+Cameroon vs Ivory Coast;Grand Stade de Marrakech;21:00;28/12/2025;Group Stage;F;Marrakech
+Cameroon vs Mozambique;Grand Stade d'Agadir;20:30;31/12/2025;Group Stage;F;Agadir
+Ivory Coast vs Gabon;Grand Stade de Marrakech;20:30;31/12/2025;Group Stage;F;Marrakech
+1A vs 3C/D/E;Stade TBD;TBD;03/01/2026;Round of 16;;
+2A vs 2C;Stade TBD;TBD;03/01/2026;Round of 16;;
+1B vs 3A/C/D;Stade TBD;TBD;04/01/2026;Round of 16;;
+2B vs 2F;Stade TBD;TBD;04/01/2026;Round of 16;;
+1C vs 3B/F;Stade TBD;TBD;05/01/2026;Round of 16;;
+1D vs 3B/E/F;Stade TBD;TBD;05/01/2026;Round of 16;;
+1E vs 2D;Stade TBD;TBD;06/01/2026;Round of 16;;
+1F vs 2E;Stade TBD;TBD;06/01/2026;Round of 16;;
+QF1;Stade TBD;TBD;09/01/2026;Quarter Final;;
+QF2;Stade TBD;TBD;09/01/2026;Quarter Final;;
+QF3;Stade TBD;TBD;10/01/2026;Quarter Final;;
+QF4;Stade TBD;TBD;10/01/2026;Quarter Final;;
+SF1;Stade TBD;TBD;14/01/2026;Semi Final;;
+SF2;Stade TBD;TBD;14/01/2026;Semi Final;;
+3rd Place Match;Stade TBD;TBD;17/01/2026;3rd Place;;
+Final;Prince Moulay Abdellah;TBD;18/01/2026;Final;;Rabat
