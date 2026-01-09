@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
+    protected $guarded = [];
+
     public function matchesAsTeam1()
     {
         return $this->hasMany(Game::class, 'team_1_id');

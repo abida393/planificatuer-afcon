@@ -14,13 +14,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:8081",
-        "http://localhost:8081",
-        "http://127.0.0.1:5500",
-        "http://localhost:5500",
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8001",
-        "http://localhost:8001",
+        "*",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -547,4 +541,4 @@ if __name__ == "__main__":
     else:
         # API Server Mode
         import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8000)
+        uvicorn.run(app, host="127.0.0.1", port=8001)

@@ -253,7 +253,9 @@
                                     </div>
                                 </div>
                             </div>
+                            </div>
                         </div>
+
 
                         <!-- CTA Button -->
                         <div class="pt-8 text-center">
@@ -321,7 +323,7 @@
                     class="relative inline-block bg-gradient-to-r from-white to-amber-50 px-10 py-6 rounded-3xl shadow-2xl border-2 border-[#daa520]/30">
                     <div class="flex flex-col items-center gap-4">
                         <div class="flex items-center gap-4">
-                            <img :src="`https://flagcdn.com/w160/${getTeamCode()}.png`" :alt="team"
+                            <img :src="getFlagUrl(plan?.team)" :alt="team"
                                 class="w-12 h-12 rounded-full border-2 border-white shadow-lg"
                                 onerror="this.style.display='none'">
                             <h3 class="text-4xl font-bold text-gray-800">
@@ -355,8 +357,8 @@
 
                             <!-- Content Card -->
                             <div class="w-full md:w-5/12" :class="index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'">
-                                <div @click="openModal(stop)"
-                                    class="group relative bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-100 hover:border-[#daa520] cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
+                                <div @click="openModal(stop); console.log('Card clicked', stop)"
+                                    class="group relative bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-100 hover:border-[#daa520] cursor-pointer transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl active:scale-95">
 
                                     <!-- Card Decoration -->
                                     <div
@@ -391,7 +393,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Stadium & Budget -->
+                                    </div>
+
+
+
+                                    <!-- Stadium & Budget Total -->
                                     <div class="space-y-4">
                                         <div class="flex items-center gap-3 text-gray-600">
                                             <svg class="w-5 h-5 text-[#daa520]" fill="none" stroke="currentColor"
@@ -505,6 +511,45 @@
                                         d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
+                        </div>
+
+                        <!-- Recommended Accommodation -->
+                        <div class="mb-8 bg-blue-50 rounded-2xl p-6 border border-blue-100" x-show="selectedCity?.city_metadata?.description">
+                             <h4 class="text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                Recommended Accommodation
+                             </h4>
+                             <p class="text-blue-800 font-medium" x-text="selectedCity?.city_metadata?.description.replace('Stay at ', '')"></p>
+                        </div>
+
+                        <!-- Budget Breakdown -->
+                        <div class="mb-8" x-show="selectedCity?.costs?.breakdown">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <svg class="w-6 h-6 text-[#daa520]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Estimated Daily Budget
+                            </h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <!-- Hotel -->
+                                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                                    <div class="text-xs text-gray-500 uppercase font-bold mb-1">Hotel</div>
+                                    <div class="font-bold text-gray-800" x-text="formatCurrency(selectedCity?.costs?.breakdown?.hotel || 0)"></div>
+                                </div>
+                                <!-- Food -->
+                                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                                    <div class="text-xs text-gray-500 uppercase font-bold mb-1">Food</div>
+                                    <div class="font-bold text-gray-800" x-text="formatCurrency(selectedCity?.costs?.breakdown?.food || 0)"></div>
+                                </div>
+                                <!-- Transport -->
+                                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                                    <div class="text-xs text-gray-500 uppercase font-bold mb-1">Transport</div>
+                                    <div class="font-bold text-gray-800" x-text="formatCurrency(selectedCity?.costs?.breakdown?.transport || 0)"></div>
+                                </div>
+                                <!-- Exploration -->
+                                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 text-center">
+                                    <div class="text-xs text-gray-500 uppercase font-bold mb-1">Activities</div>
+                                    <div class="font-bold text-gray-800" x-text="formatCurrency(selectedCity?.costs?.breakdown?.exploration || 0)"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Must Visit Section -->
@@ -864,7 +909,7 @@
                 this.plan = null;
 
                 try {
-                    const response = await fetch('/generate-plan', {
+                    const response = await fetch('/chat-webhook', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -878,7 +923,7 @@
                     });
 
                     const data = await response.json();
-
+                    console.log(data); 
                     if (!response.ok) {
                         throw new Error(data.error || data.details || 'Failed to fetch plan.');
                     }
@@ -936,6 +981,7 @@
             },
 
             openModal(stop) {
+                console.log('Opening modal for:', stop);
                 this.selectedCity = stop;
                 this.modalOpen = true;
             },
@@ -982,12 +1028,15 @@
             }
             ,
 
-            getFlagUrl(countryName) {
-                if (!countryName) return '';
-                const found = this.teams.find(t => t.name.includes(countryName) || countryName.includes(t.name));
-                const code = found ? found.code : 'ma'; // Fallback to Morocco if unknown
-                return `https://flagcdn.com/w160/${code}.png`;
-            }
+            getFlagUrl(teamName) {
+                if (!teamName || teamName === 'TBD' || teamName.includes('Opponent')) return '/images/national_teams_flags/caf.png'; 
+                // Filenames are lowercase without spaces, e.g., "burkinafaso.png", "ivorycoast.png"
+                const filename = teamName.toLowerCase().replace(/\s+/g, '');
+                // Note: If the file doesn't exist, the browser will show the alt text or a broken image. 
+                // Ideally we'd have a list of valid files, but for now we trust the generation logic.
+                // We must NOT return 'morocco.png' as a catch-all.
+                return `/images/national_teams_flags/${filename}.png`;
+            },
         }
     }
 </script>
